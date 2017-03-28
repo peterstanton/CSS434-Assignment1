@@ -4,26 +4,27 @@
 
 import java.io.*;
 import java.net.*;
+import
 
 
 public class Server {
 
-    private Socket socket;
-    private ServerSocket server;
+    //private Socket socket;
+    private ServerSocket socket;
     private DataInputStream userInput;
 
 
 
 public Server(int port) {
-
-
+///test
     try {
-        server = new ServerSocket(port);
-        server.setSoTimeout(500);
+        socket = new ServerSocket(port);
+        socket.setSoTimeout(500);
         try {
-            server.accept();
-            if (server != null) {
+            socket.accept();
+            if (socket != null) {
                 //checking to see if we got a connection.
+                //store a new Connection.
             }
         }
         catch (SocketTimeoutException e) {
