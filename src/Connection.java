@@ -5,7 +5,11 @@ import java.io.*;
 import java.net.*;
 
 public class Connection {
-    public string userName;
-    public int port;
+    private String userName;
+    private ServerSocket clientSocket;
 
+
+    public Connection(ServerSocket inSocket) {
+        clientSocket = inSocket;
+    }
 }

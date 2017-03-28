@@ -4,27 +4,32 @@
 
 import java.io.*;
 import java.net.*;
-import
+import java.util.*;
 
 
 public class Server {
 
-    //private Socket socket;
-    private ServerSocket socket;
+    private ServerSocket serverSideSocket;
     private DataInputStream userInput;
-
+    private List<Connection> conList;
 
 
 public Server(int port) {
 ///test
+
+
     try {
-        socket = new ServerSocket(port);
-        socket.setSoTimeout(500);
+        serverSideSocket = new ServerSocket(port);
+        serverSideSocket.setSoTimeout(500);
         try {
-            socket.accept();
-            if (socket != null) {
+            serverSideSocket.accept();
+            if (serverSideSocket != null) {
+                Connection detected = new Connection(serverSideSocket);
                 //checking to see if we got a connection.
                 //store a new Connection.
+            }
+            else {
+                //I don't know.
             }
         }
         catch (SocketTimeoutException e) {
