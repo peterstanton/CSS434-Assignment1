@@ -25,6 +25,7 @@ public Server(int port) {
             serverSideSocket.accept();
             if (serverSideSocket != null) {
                 Connection detected = new Connection(serverSideSocket);
+                conList.add(detected);
                 //checking to see if we got a connection.
                 //store a new Connection.
             }
