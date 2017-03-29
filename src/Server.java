@@ -16,25 +16,23 @@ public class Server {
 
 public Server(int port) {
 ///test
-
-
     try {
         serverSideSocket = new ServerSocket(port);
         serverSideSocket.setSoTimeout(500);
-        try {
-            serverSideSocket.accept();
-            if (serverSideSocket != null) {
-                Connection detected = new Connection(serverSideSocket);
-                conList.add(detected);
-                //checking to see if we got a connection.
-                //store a new Connection.
+        for (; ; ) {  //keeps repeating until we get some shutdown signal.
+            try {
+                serverSideSocket.accept();
+                if (serverSideSocket != null) {
+                    Connection detected = new Connection(serverSideSocket);
+                    conList.add(detected);
+                    //checking to see if we got a connection.
+                    //store a new Connection.
+                } else {
+                    //I don't know.
+                }
+            } catch (SocketTimeoutException e) {
+                //stuff
             }
-            else {
-                //I don't know.
-            }
-        }
-        catch (SocketTimeoutException e) {
-        //stuff
         }
     }
     catch(IOException ioe)
