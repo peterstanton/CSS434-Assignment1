@@ -15,7 +15,7 @@ public class Server {
 
 
 public Server(int port) {
-///test
+
     try {
         serverSideSocket = new ServerSocket(port);
         serverSideSocket.setSoTimeout(500);
@@ -26,11 +26,13 @@ public Server(int port) {
                     Connection detected = new Connection(serverSideSocket);
                     conList.add(detected);
                     //checking to see if we got a connection.
-                    //store a new Connection.
-                } else {
+                }
+                else {
+                    continue;
                     //I don't know.
                 }
             } catch (SocketTimeoutException e) {
+                continue; //keep trying for a connection.
                 //stuff
             }
         }
