@@ -10,37 +10,40 @@ import java.util.*;
 public class Server {
 
     private ServerSocket serverSideSocket;
-    private DataInputStream userInput;
     private List<Connection> conList;
 
 
 public Server(int port) {
 
-    try {
-        serverSideSocket = new ServerSocket(port);
-        serverSideSocket.setSoTimeout(500);
         for (; ; ) {  //keeps repeating until we get some shutdown signal.
+           try {
+               serverSideSocket = new ServerSocket(port); //this all needs to be in the loop.
+           }
+            catch(IOException ioe) {  //stuff here.
+            }
+            try {
+                serverSideSocket.setSoTimeout(500);
+            }
+            catch (SocketException se) {
+            }
+
             try {
                 serverSideSocket.accept();
                 if (serverSideSocket != null) {
                     Connection detected = new Connection(serverSideSocket);
                     conList.add(detected);
                     //checking to see if we got a connection.
-                }
-                else {
+                } else {
                     continue;
                     //I don't know.
                 }
-            } catch (SocketTimeoutException e) {
-                continue; //keep trying for a connection.
-                //stuff
             }
+            catch(IOException ioe)
+            {  //stuff here.
+            }
+            //once I've checked for new connections, I should cycle through my
+            //connection list and check for new data to receive and send to the other
+            //connections.
         }
     }
-    catch(IOException ioe)
-    {  //stuff here.
-    }
-
-}
-
 }

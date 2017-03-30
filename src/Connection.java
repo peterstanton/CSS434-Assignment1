@@ -6,25 +6,35 @@ import java.net.*;
 
 public class Connection {
     private String userName;
+
     private ServerSocket clientSocket;
+    private Socket test;
+
     private boolean errored;
+
+
+    private DataInputStream inData;  //do I use the readUTF function on the reg streams to put strings into the datastreams?
+    private DataOutputStream outData;
     private InputStream inText;
     private OutputStream outText;
 
+    private String text;
 
-    public Connection(ServerSocket inSocket) {
+
+    public Connection(ServerSocket inSocket) throws IOException {
 
         clientSocket = inSocket;
         errored = false;
-        //do stuff to maintain the connection?
-        maintainConnection();
+        outText = test.getOutputStream();
+        outText = clientSocket.getOutputStream();
+        maintainConnection(); //the stuff this currently does should be invoked by the server.
         //terminate.
     }
 
     public void maintainConnection() {
         //stuff to run the connection.
+        int inputWaiting;
         for (;;) {
-            int inputWaiting;
             try {
                 inputWaiting = inText.available();
             }
@@ -37,22 +47,30 @@ public class Connection {
                 readMessage();
                 //invoke read message.
             }
-            else {
-                continue; //nothing.
+            if (errored == true) {
+                break;
             }
-            //should I check for write?
+        }
+        //time to end connection.
+    }
+    //I should replace all this stuff. Instead of infinite loop,
+    //the looping is handled by the server.
+    //Will have to signal an error state for connection termination
+    //by the server.
 
-            //stuff running the connection here.
-            //when available, call read message.
-            //when I get input, send to write.
+    public void readMessage() {
+        try {
+            text = inText.readUTF();
+        }
+        catch (IOException ioe) {
+            errored = true;
         }
     }
-    public void readMessage() {
-        //stuff for receiving messages.
-    }
-    public void writeMessage() {
+    public void writeMessage(String outgoingMessage) {
         //stuff for sending a message.
     }
 }
+
+
 
 //the read and write functions will involve passing data to and from the server from the client.
