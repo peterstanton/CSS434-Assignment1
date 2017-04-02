@@ -6,7 +6,7 @@ import java.net.*;
 
 public class Connection {
     private String userName;
-    private Socket test;
+    private Socket client;
     private boolean errored;
 
 
@@ -19,10 +19,10 @@ public class Connection {
 
 
     public Connection(ServerSocket inSocket) throws IOException {
-        //rewrite to instantiate a socket from a ServerSocket.
-        //clientSocket = inSocket;
+
+        client = new Socket(inSocket.getInetAddress(), inSocket.getLocalPort());
         errored = false;
-        outText = test.getOutputStream();
+        outText = client.getOutputStream();
         maintainConnection(); //the stuff this currently does should be invoked by the server.
         //terminate.
     }
