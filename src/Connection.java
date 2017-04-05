@@ -4,8 +4,8 @@
 import java.io.*;
 import java.net.*;
 
-public class Connection {
-    public String userName;
+public class Connection extends Thread {
+    //public String userName;
     private Socket client;
     private boolean errored;
 
@@ -67,6 +67,7 @@ public class Connection {
     public void readMessage() {
         try {
             myText = inData.readUTF();
+            System.out.println("Received: " + myText);
         }
         catch (IOException ioe) {
             errored = true;
@@ -81,3 +82,7 @@ public class Connection {
 
 
 //the read and write functions will involve passing data to and from the server from the client.
+
+
+//Because connection will exist on an independent thread, I should be fine with my running function in
+//Connection.
