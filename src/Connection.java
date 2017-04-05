@@ -15,19 +15,20 @@ public class Connection {
     private InputStream inText;
     private OutputStream outText;
 
-    private String text;
+    byte[] buf = new byte[1000];
 
 
     public Connection(ServerSocket inSocket) throws IOException {
 
-        client = new Socket(inSocket.getInetAddress(), inSocket.getLocalPort());
+        client = new Socket();
+        client = inSocket.accept();
         errored = false;
         outText = client.getOutputStream();
-        maintainConnection(); //the stuff this currently does should be invoked by the server.
+        maintainConnection(); //the stuff this currently does should be invoked by the server. I should be returning.
         //terminate.
     }
 
-    public void maintainConnection() {
+    public void maintainConnection() {  //this should be server stuff, that loops through the vector of connections checking available.
         //stuff to run the connection.
         int inputWaiting;
         for (;;) {
@@ -54,14 +55,18 @@ public class Connection {
     //Will have to signal an error state for connection termination
     //by the server.
 
+    //read message shouldn't be void, it should return an output string to the server.
     public void readMessage() {
         try {
-            text = inText.readUTF();
+            inText.read(buf);
+            String received = new String(buf); //change return type and hand this to the server.
+
         }
         catch (IOException ioe) {
             errored = true;
         }
     }
+    //shouldn't be void, should return a boolean if writing was successful.
     public void writeMessage(String outgoingMessage) {
         //stuff for sending a message.
     }
