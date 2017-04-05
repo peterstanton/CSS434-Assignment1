@@ -5,25 +5,33 @@ import java.io.*;
 import java.net.*;
 
 public class Connection {
-    private String userName;
+    public String userName;
     private Socket client;
     private boolean errored;
 
 
     private DataInputStream inData;  //do I use the readUTF function on the reg streams to put strings into the datastreams?
     private DataOutputStream outData;
-    private InputStream inText;
-    private OutputStream outText;
+    private InputStream rawIn;
+    private OutputStream rawOut;
 
-    byte[] buf = new byte[1000];
+    private String myText = new String();
 
 
     public Connection(ServerSocket inSocket) throws IOException {
 
         client = new Socket();
         client = inSocket.accept();
+
+
         errored = false;
-        outText = client.getOutputStream();
+
+        rawOut = client.getOutputStream();
+        rawIn = client.getInputStream();
+
+        outData = new DataOutputStream(rawOut);
+        inData = new DataInputStream(rawIn);
+
         maintainConnection(); //the stuff this currently does should be invoked by the server. I should be returning.
         //terminate.
     }
@@ -33,7 +41,7 @@ public class Connection {
         int inputWaiting;
         for (;;) {
             try {
-                inputWaiting = inText.available();
+                inputWaiting = rawIn.available();
             }
             catch (IOException ioe) {
                 //exception handling.
@@ -58,9 +66,7 @@ public class Connection {
     //read message shouldn't be void, it should return an output string to the server.
     public void readMessage() {
         try {
-            inText.read(buf);
-            String received = new String(buf); //change return type and hand this to the server.
-
+            myText = inData.readUTF();
         }
         catch (IOException ioe) {
             errored = true;
