@@ -5,7 +5,6 @@ import java.io.*;
 import java.net.*;
 
 public class Connection extends Thread {
-    //public String userName;
     private Socket client;
     private boolean errored;
 
@@ -16,6 +15,7 @@ public class Connection extends Thread {
     private OutputStream rawOut;
 
     private String myText = new String();
+    public String userID = new String();
 
 
     public Connection(ServerSocket inSocket) throws IOException {
@@ -32,8 +32,18 @@ public class Connection extends Thread {
         outData = new DataOutputStream(rawOut);
         inData = new DataInputStream(rawIn);
 
+        userID = client.getInetAddress().getCanonicalHostName();
+
         maintainConnection(); //the stuff this currently does should be invoked by the server. I should be returning.
         //terminate.
+    }
+
+    public String getID() {
+        return userID;
+    }
+
+    public void clearText() {
+        myText = "";
     }
 
     public void maintainConnection() {  //this should be server stuff, that loops through the vector of connections checking available.
@@ -67,7 +77,8 @@ public class Connection extends Thread {
     public void readMessage() {
         try {
             myText = inData.readUTF();
-            System.out.println("Received: " + myText);
+            //System.out.println("Received: " + myText);
+            super.propagate(myText,userID);
         }
         catch (IOException ioe) {
             errored = true;
@@ -75,7 +86,13 @@ public class Connection extends Thread {
     }
     //shouldn't be void, should return a boolean if writing was successful.
     public void writeMessage(String outgoingMessage) {
-        //stuff for sending a message.
+        try {
+            outData.writeUTF(outgoingMessage);
+            //System.out.println("Received: " + myText);
+        }
+        catch (IOException ioe) {
+            errored = true;
+        }
     }
 }
 

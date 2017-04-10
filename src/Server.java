@@ -12,7 +12,6 @@ public class Server {
     private ServerSocket serverSideSocket;
     private List<Connection> conList;
 
-
 public Server(int port) {
 
         for (; ; ) {  //keeps repeating until we get some shutdown signal.
@@ -41,9 +40,10 @@ public Server(int port) {
             catch(IOException ioe)
             {  //stuff here.
             }
-            //once I've checked for new connections, I should cycle through my
-            //connection list and check for new data to receive and send to the other
-            //connections.
         }
     }
+    public void propagate(String message, String ID){
+
+    }
+
 }
