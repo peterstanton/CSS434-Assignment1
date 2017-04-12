@@ -27,19 +27,24 @@ public Server(int port) {
             }
 
             try {
-                serverSideSocket.accept();
-                if (serverSideSocket != null) {
-                    Connection detected = new Connection(serverSideSocket);
-                    conList.add(detected);
-                    //checking to see if we got a connection.
-                } else {
-                    continue;
-                    //I don't know.
+                while (true) {
+                    serverSideSocket.accept();
+                    if (serverSideSocket != null) {
+                        Socket clientSocket;
+                        clientSocket = serverSideSocket.accept();
+                        Connection detected = new Connection(clientSocket);
+                        conList.add(detected);
+                        //checking to see if we got a connection.
+                    } else {
+                        continue;
+                        //I don't know.
+                    }
                 }
             }
             catch(IOException ioe)
             {  //stuff here.
             }
+
         }
     }
     public void propagate(String message, String ID){

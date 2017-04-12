@@ -4,7 +4,7 @@
 import java.io.*;
 import java.net.*;
 
-public class Connection extends Thread {
+public class Connection {
     private Socket client;
     private boolean errored;
 
@@ -18,10 +18,10 @@ public class Connection extends Thread {
     public String userID = new String();
 
 
-    public Connection(ServerSocket inSocket) throws IOException {
+    public Connection(Socket in) throws IOException {
 
         client = new Socket();
-        client = inSocket.accept();
+        client = in;
 
 
         errored = false;
@@ -33,9 +33,6 @@ public class Connection extends Thread {
         inData = new DataInputStream(rawIn);
 
         userID = client.getInetAddress().getCanonicalHostName();
-
-        maintainConnection(); //the stuff this currently does should be invoked by the server. I should be returning.
-        //terminate.
     }
 
     public String getID() {
@@ -78,7 +75,7 @@ public class Connection extends Thread {
         try {
             myText = inData.readUTF();
             //System.out.println("Received: " + myText);
-            super.propagate(myText,userID);
+            //super.propagate(myText,userID);
         }
         catch (IOException ioe) {
             errored = true;
