@@ -35,18 +35,16 @@ public Server(int port) {
                         Connection detected = new Connection(clientSocket);
                         conList.add(detected);
                         for (int i = 0; i < conList.size(); i++) {
-                            int inputWaiting;
-                            inputWaiting = conList.get(i).rawIn.available();
                             //if a client has a message.
-                            if (inputWaiting > 0) {
+                            if (conList.get(i).getAvailable()) {
                                 //get the message and send it on.
-                                String myText = conList.get(i).inData.readUTF();
+                                String myText = conList.get(i).getMessage();    //I should really obey encapsulation and interact using methods.
                                 String senderID = conList.get(i).getID();
                                 //send the data to the other connections.
                                 for (int j = 0; j < conList.size(); j++) {
-                                    if (conList.get(j).userID != senderID) {
+                                    if (conList.get(j).userID != senderID) {  //replace with equals()?
                                         //write the outgoing message to other users.
-                                        conList.get(j).outData.writeUTF(myText);
+                                        conList.get(j).sendMessage(myText);
                                     }
                                 }
                             }
@@ -64,8 +62,4 @@ public Server(int port) {
 
         }
     }
-    public void propagate(String message, String ID){
-
-    }
-
 }
