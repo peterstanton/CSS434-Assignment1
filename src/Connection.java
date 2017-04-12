@@ -9,9 +9,9 @@ public class Connection {
     private boolean errored;
 
 
-    private DataInputStream inData;  //do I use the readUTF function on the reg streams to put strings into the datastreams?
-    private DataOutputStream outData;
-    private InputStream rawIn;
+    public DataInputStream inData;  //do I use the readUTF function on the reg streams to put strings into the datastreams?
+    public DataOutputStream outData;
+    public InputStream rawIn;
     private OutputStream rawOut;
 
     private String myText = new String();

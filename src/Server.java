@@ -34,6 +34,23 @@ public Server(int port) {
                         clientSocket = serverSideSocket.accept();
                         Connection detected = new Connection(clientSocket);
                         conList.add(detected);
+                        for (int i = 0; i < conList.size(); i++) {
+                            int inputWaiting;
+                            inputWaiting = conList.get(i).rawIn.available();
+                            //if a client has a message.
+                            if (inputWaiting > 0) {
+                                //get the message and send it on.
+                                String myText = conList.get(i).inData.readUTF();
+                                String senderID = conList.get(i).getID();
+                                //send the data to the other connections.
+                                for (int j = 0; j < conList.size(); j++) {
+                                    if (conList.get(j).userID != senderID) {
+                                        //write the outgoing message to other users.
+                                        conList.get(j).outData.writeUTF(myText);
+                                    }
+                                }
+                            }
+                        }
                         //checking to see if we got a connection.
                     } else {
                         continue;
