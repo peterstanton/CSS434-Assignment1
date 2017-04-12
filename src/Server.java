@@ -42,7 +42,7 @@ public Server(int port) {
                                 String senderID = conList.get(i).getID();
                                 //send the data to the other connections.
                                 for (int j = 0; j < conList.size(); j++) {
-                                    if (conList.get(j).userID != senderID) {  //replace with equals()?
+                                    if (!senderID.equals(conList.get(j).getID())) {  //replace with equals()?   if (conList.get(j).userID != senderID)
                                         //write the outgoing message to other users.
                                         conList.get(j).sendMessage(myText);
                                     }
