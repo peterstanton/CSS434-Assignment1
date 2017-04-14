@@ -14,7 +14,6 @@ public class Server {
 
 public Server(int port) {
 
-        for (; ; ) {  //keeps repeating until we get some shutdown signal.
            try {
                serverSideSocket = new ServerSocket(port); //this all needs to be in the loop.
            }
@@ -42,7 +41,7 @@ public Server(int port) {
                                 String senderID = conList.get(i).getID();
                                 //send the data to the other connections.
                                 for (int j = 0; j < conList.size(); j++) {
-                                    if (!senderID.equals(conList.get(j).getID())) {  //replace with equals()?   if (conList.get(j).userID != senderID)
+                                    if (!senderID.equals(conList.get(j).getID())) {  //replace with equals()?  if (conList.get(j).userID != senderID)
                                         //write the outgoing message to other users.
                                         conList.get(j).sendMessage(myText);
                                     }
@@ -60,6 +59,6 @@ public Server(int port) {
             {  //stuff here.
             }
 
-        }
+
     }
 }

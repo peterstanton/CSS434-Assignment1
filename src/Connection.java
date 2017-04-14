@@ -57,12 +57,7 @@ public class Connection {
         myText = "";
     }
 
-    //I should replace all this stuff. Instead of infinite loop,
-    //the looping is handled by the server.
-    //Will have to signal an error state for connection termination
-    //by the server.
 
-    //read message shouldn't be void, it should return an output string to the server.
     public String getMessage() {
         try {
             myText = inData.readUTF();
@@ -90,36 +85,4 @@ public class Connection {
     }
 }
 
-
-
-//the read and write functions will involve passing data to and from the server from the client.
-
-
-//Because connection will exist on an independent thread, I should be fine with my running function in
-//Connection.
-
-//DEPCREATED
-
-
-    /*public void maintainConnection() {  //this should be server stuff, that loops through the vector of connections checking available.
-        //stuff to run the connection.
-        int inputWaiting;
-        for (;;) {
-            try {
-                inputWaiting = rawIn.available();
-            }
-            catch (IOException ioe) {
-                //exception handling.
-                errored = true;
-                break;
-            }
-            if (inputWaiting > 0) {
-                readMessage();
-                //invoke read message.
-            }
-            if (errored == true) {
-                break;
-            }
-        }
-        //time to end connection.
-    }*/
+//If should do something with errored. If a connection becomes errored, I should delete it from conList.
