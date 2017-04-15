@@ -9,10 +9,13 @@ import java.util.*;
 
 public class Server {
 
+
     private ServerSocket serverSideSocket;
-    private List<Connection> conList;
+    private Vector<Connection> conList;
+
 
 public Server(int port) {
+
 
            try {
                serverSideSocket = new ServerSocket(port); //this all needs to be in the loop.
@@ -61,4 +64,11 @@ public Server(int port) {
 
 
     }
+    public static void main( String[] args ) {
+        int listeningPort=Integer.parseInt(args[2]); //for debugging.
+        // int listeningPort = 1245;  //this overflows in debugging.
+        Server s = new Server(listeningPort);
+        System.out.println("Hello World!");
+    }
+
 }
