@@ -51,6 +51,11 @@ public Server(int port) {
                                 }
                             }
                         }
+                        for (int k = 0; k < conList.size(); k++) {
+                            if(conList.get(k).getStatus() == true) {
+                                conList.remove(k);
+                            }
+                        }
                         //checking to see if we got a connection.
                     } else {
                         continue;
