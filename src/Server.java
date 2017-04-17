@@ -21,8 +21,6 @@ public Server(int port) throws IOException {
 	System.out.println("Hi");
         serverSideSocket.setSoTimeout(500);
         while (true) {
-
-
                 try {
                     while (true) {
                         Socket clientSocket;
@@ -30,15 +28,16 @@ public Server(int port) throws IOException {
                         if (clientSocket != null) {
                             Connection detected = new Connection(clientSocket);
                             conList.add(detected);
+                            //checking to see if we got a connection.
                             for (int i = 0; i < conList.size(); i++) {
                                 //if a client has a message.
                                 if (conList.get(i).getAvailable()) {
                                     //get the message and send it on.
-                                    String myText = conList.get(i).getMessage();    
+                                    String myText = conList.get(i).getMessage();
                                     String senderID = conList.get(i).getID();
                                     //send the data to the other connections.
                                     for (int j = 0; j < conList.size(); j++) {
-                                        if (!senderID.equals(conList.get(j).getID())) { 
+                                        if (!senderID.equals(conList.get(j).getID())) {
                                             //write the outgoing message to other users.
                                             conList.get(j).sendMessage(myText);
                                         }
@@ -50,12 +49,51 @@ public Server(int port) throws IOException {
                                     conList.remove(k);
                                 }
                             }
-                            //checking to see if we got a connection.
                         } else {
+                            for (int i = 0; i < conList.size(); i++) {
+                                //if a client has a message.
+                                if (conList.get(i).getAvailable()) {
+                                    //get the message and send it on.
+                                    String myText = conList.get(i).getMessage();
+                                    String senderID = conList.get(i).getID();
+                                    //send the data to the other connections.
+                                    for (int j = 0; j < conList.size(); j++) {
+                                        if (!senderID.equals(conList.get(j).getID())) {
+                                            //write the outgoing message to other users.
+                                            conList.get(j).sendMessage(myText);
+                                        }
+                                    }
+                                }
+                            }
+                            for (int k = 0; k < conList.size(); k++) {
+                                if (conList.get(k).getStatus() == true) {
+                                    conList.remove(k);
+                                }
+                            }
 
                         }
                     }
-                } catch (IOException ioe) {  //stuff here.
+                } catch (IOException ioe) {
+                    for (int i = 0; i < conList.size(); i++) {
+                        //if a client has a message.
+                        if (conList.get(i).getAvailable()) {
+                            //get the message and send it on.
+                            String myText = conList.get(i).getMessage();
+                            String senderID = conList.get(i).getID();
+                            //send the data to the other connections.
+                            for (int j = 0; j < conList.size(); j++) {
+                                if (!senderID.equals(conList.get(j).getID())) {
+                                    //write the outgoing message to other users.
+                                    conList.get(j).sendMessage(myText);
+                                }
+                            }
+                        }
+                    }
+                    for (int k = 0; k < conList.size(); k++) {
+                        if (conList.get(k).getStatus() == true) {
+                            conList.remove(k);
+                        }
+                    }
                 }
 
             }
