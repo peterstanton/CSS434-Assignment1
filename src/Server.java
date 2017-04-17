@@ -26,35 +26,29 @@ public Server(int port) {
                 try {
                     serverSideSocket.setSoTimeout(500);
                 } catch (SocketException se) {
-		System.out.println("Nothing found");
+                  System.out.println("Nothing found");
                 }
 
                 try {
                     while (true) {
-			Socket clientSocket;
-			clientSocket = serverSideSocket.accept();
+			            Socket clientSocket;
+			            clientSocket = serverSideSocket.accept();
                         if (clientSocket != null) {
-				System.out.println("Socket found.");
-                                                   
+				            System.out.println("Socket found.");
                             Connection detected = new Connection(clientSocket);
                             conList.add(detected);
-				System.out.println("Connection Added.");
+				            System.out.println("Connection Added.");
 
-                            for (int k = 0; k < conList.size(); k++) {
-                                if (conList.get(k).getStatus() == true) {
-                                    conList.remove(k);
-                                }
-                            }
                             //checking to see if we got a connection.
                         } else {
                             System.out.println("Nothing");
                             //I don't know.
                         }
-			        for (int i = 0; i < conList.size(); i++) {
-				System.out.println("Checking my connections");
+			            for (int i = 0; i < conList.size(); i++) {
+				                System.out.println("Checking my connections");
                                 //if a client has a message.
                                 if (conList.get(i).getAvailable()) {
-					System.out.println("I have a message!");
+					                System.out.println("I have a message!");
                                     //get the message and send it on.
                                     String myText = conList.get(i).getMessage();    //I should really obey encapsulation and interact using methods.
                                     String senderID = conList.get(i).getID();
@@ -67,6 +61,12 @@ public Server(int port) {
                                     }
                                 }
                             }
+
+                        for (int k = 0; k < conList.size(); k++) {
+                            if (conList.get(k).getStatus() == true) {
+                                conList.remove(k);
+                            }
+                        }
                     }
                 } catch (IOException ioe) {  //stuff here.
                 }
