@@ -14,7 +14,7 @@ public class Server {
     private LinkedList<Connection> conList;
 
 
-public Server(int port) throws IOException {
+public Server(int port) {
 
 	   conList = new LinkedList<Connection>();
            try {
@@ -28,6 +28,8 @@ public Server(int port) throws IOException {
                 } catch (SocketException se) {
                   System.out.println("Nothing found");
                 }
+
+                try {
                     while (true) {
 			            Socket clientSocket;
 			            clientSocket = serverSideSocket.accept();
@@ -63,11 +65,12 @@ public Server(int port) throws IOException {
                             }
                         }
                     }
-
+                } catch (IOException ioe) {  //stuff here.
+                }
 
             }
     }
-    public static void main( String[] args ) throws IOException {
+    public static void main( String[] args ) {
         int listeningPort=Integer.parseInt(args[0]); //for debugging.
         // int listeningPort = 1245;  //this overflows in debugging.
         Server s = new Server(listeningPort);
