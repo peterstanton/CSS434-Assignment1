@@ -29,74 +29,41 @@ public Server(int port) throws IOException {
                             Connection detected = new Connection(clientSocket);
                             conList.add(detected);
                             //checking to see if we got a connection.
-                            for (int i = 0; i < conList.size(); i++) {
-                                //if a client has a message.
-                                if (conList.get(i).getAvailable()) {
-                                    //get the message and send it on.
-                                    String myText = conList.get(i).getMessage();
-                                    String senderID = conList.get(i).getID();
-                                    //send the data to the other connections.
-                                    for (int j = 0; j < conList.size(); j++) {
-                                        if (!senderID.equals(conList.get(j).getID())) {
-                                            //write the outgoing message to other users.
-                                            conList.get(j).sendMessage(myText);
-                                        }
-                                    }
-                                }
-                            }
-                            for (int k = 0; k < conList.size(); k++) {
-                                if (conList.get(k).getStatus() == true) {
-                                    conList.remove(k);
-                                }
-                            }
+                            runConnections();
                         } else {
-                            for (int i = 0; i < conList.size(); i++) {
-                                //if a client has a message.
-                                if (conList.get(i).getAvailable()) {
-                                    //get the message and send it on.
-                                    String myText = conList.get(i).getMessage();
-                                    String senderID = conList.get(i).getID();
-                                    //send the data to the other connections.
-                                    for (int j = 0; j < conList.size(); j++) {
-                                        if (!senderID.equals(conList.get(j).getID())) {
-                                            //write the outgoing message to other users.
-                                            conList.get(j).sendMessage(myText);
-                                        }
-                                    }
-                                }
-                            }
-                            for (int k = 0; k < conList.size(); k++) {
-                                if (conList.get(k).getStatus() == true) {
-                                    conList.remove(k);
-                                }
-                            }
-
+                            runConnections();
                         }
                     }
                 } catch (IOException ioe) {
-                    for (int i = 0; i < conList.size(); i++) {
-                        //if a client has a message.
-                        if (conList.get(i).getAvailable()) {
-                            //get the message and send it on.
-                            String myText = conList.get(i).getMessage();
-                            String senderID = conList.get(i).getID();
-                            //send the data to the other connections.
-                            for (int j = 0; j < conList.size(); j++) {
-                                if (!senderID.equals(conList.get(j).getID())) {
-                                    //write the outgoing message to other users.
-                                    conList.get(j).sendMessage(myText);
-                                }
-                            }
-                        }
-                    }
-                    for (int k = 0; k < conList.size(); k++) {
-                        if (conList.get(k).getStatus() == true) {
-                            conList.remove(k);
-                        }
-                    }
+                    //run connections
+                    runConnections();
                 }
 
             }
+    }
+
+    public void runConnections() {
+        for (int i = 0; i < conList.size(); i++) {
+            //if a client has a message.
+            if (conList.get(i).getAvailable()) {
+                //get the message and send it on.
+                String myText = conList.get(i).getMessage();
+                String senderID = conList.get(i).getID();
+                //send the data to the other connections.
+                for (int j = 0; j < conList.size(); j++) {
+                    if (!senderID.equals(conList.get(j).getID())) {
+                        //write the outgoing message to other users.
+                        conList.get(j).sendMessage(myText);
+                    }
+                }
+            }
+        }
+        for (int k = 0; k < conList.size(); k++) {
+            if (conList.get(k).getStatus() == true) {
+                conList.remove(k);
+            }
+        }
+
     }
     public static void main( String[] args ) throws IOException {
         int listeningPort=Integer.parseInt(args[0]);
