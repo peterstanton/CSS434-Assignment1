@@ -65,7 +65,30 @@ public Server(int port) {
                             }
                         }
                     }
-                } catch (IOException ioe) {  //stuff here.
+                } catch (IOException ioe) {
+                    for (int i = 0; i < conList.size(); i++) {
+                        System.out.println("Checking my connections");
+                        //if a client has a message.
+                        if (conList.get(i).getAvailable()) {
+                            System.out.println("I have a message!");
+                            //get the message and send it on.
+                            String myText = conList.get(i).getMessage();    //I should really obey encapsulation and interact using methods.
+                            String senderID = conList.get(i).getID();
+                            //send the data to the other connections.
+                            for (int j = 0; j < conList.size(); j++) {
+                                if (!senderID.equals(conList.get(j).getID())) {  //replace with equals()?  if (conList.get(j).userID != senderID)
+                                    //write the outgoing message to other users.
+                                    conList.get(j).sendMessage(myText);
+                                }
+                            }
+                        }
+                    }
+
+                    for (int k = 0; k < conList.size(); k++) {
+                        if (conList.get(k).getStatus() == true) {
+                            conList.remove(k);
+                        }
+                    }
                 }
 
             }
