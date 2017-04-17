@@ -11,12 +11,12 @@ public class Server {
 
 
     private ServerSocket serverSideSocket;
-    private Vector<Connection> conList;
+    private LinkedList<Connection> conList;
 
 
 public Server(int port) {
 
-
+	   conList = new LinkedList<Connection>();
            try {
                serverSideSocket = new ServerSocket(port); //this all needs to be in the loop.
            }
@@ -26,19 +26,35 @@ public Server(int port) {
                 try {
                     serverSideSocket.setSoTimeout(500);
                 } catch (SocketException se) {
+		System.out.println("Nothing found");
                 }
 
                 try {
                     while (true) {
-                        serverSideSocket.accept();
-                        if (serverSideSocket != null) {
-                            Socket clientSocket;
-                            clientSocket = serverSideSocket.accept();
+			Socket clientSocket;
+			clientSocket = serverSideSocket.accept();
+                        if (clientSocket != null) {
+				System.out.println("Socket found.");
+                                                   
                             Connection detected = new Connection(clientSocket);
                             conList.add(detected);
-                            for (int i = 0; i < conList.size(); i++) {
+				System.out.println("Connection Added.");
+
+                            for (int k = 0; k < conList.size(); k++) {
+                                if (conList.get(k).getStatus() == true) {
+                                    conList.remove(k);
+                                }
+                            }
+                            //checking to see if we got a connection.
+                        } else {
+                            System.out.println("Nothing");
+                            //I don't know.
+                        }
+			        for (int i = 0; i < conList.size(); i++) {
+				System.out.println("Checking my connections");
                                 //if a client has a message.
                                 if (conList.get(i).getAvailable()) {
+					System.out.println("I have a message!");
                                     //get the message and send it on.
                                     String myText = conList.get(i).getMessage();    //I should really obey encapsulation and interact using methods.
                                     String senderID = conList.get(i).getID();
@@ -51,16 +67,6 @@ public Server(int port) {
                                     }
                                 }
                             }
-                            for (int k = 0; k < conList.size(); k++) {
-                                if (conList.get(k).getStatus() == true) {
-                                    conList.remove(k);
-                                }
-                            }
-                            //checking to see if we got a connection.
-                        } else {
-                            continue;
-                            //I don't know.
-                        }
                     }
                 } catch (IOException ioe) {  //stuff here.
                 }
@@ -68,7 +74,7 @@ public Server(int port) {
             }
     }
     public static void main( String[] args ) {
-        int listeningPort=Integer.parseInt(args[2]); //for debugging.
+        int listeningPort=Integer.parseInt(args[0]); //for debugging.
         // int listeningPort = 1245;  //this overflows in debugging.
         Server s = new Server(listeningPort);
         System.out.println("Hello World!");

@@ -24,7 +24,7 @@ public class Connection {
         client = in;
 
         errored = false;
-
+	
         rawOut = client.getOutputStream();
         rawIn = client.getInputStream();
 
@@ -60,6 +60,7 @@ public class Connection {
 
     public String getMessage() {
         try {
+	    System.out.println("I am getting a message");
             myText = inData.readUTF();
             //System.out.println("Received: " + myText);
             //super.propagate(myText,userID);
@@ -67,6 +68,7 @@ public class Connection {
         catch (IOException ioe) {
             errored = true;
         }
+	
         return myText;
     }
     //shouldn't be void, should return a boolean if writing was successful.
